@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+\usepackage[polish]{babel}
+\usepackage[letterpaper,top=3cm,bottom=3cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{polski}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{tikz}
+
+\title{Indeks Chromatyczny (kolorowanie krawędzi)}
+\author{Gabriel Budziński\\254609}
+
+\begin{document}
+\maketitle
+
+\section{Opis problemu}
+
+Jeśli $G$ jest grafem, to \textit{indeks chromatyczny} $\chi'(G)$ jest najmniejszą liczbą kolorów potrzebnych do pokolorowania jego krawędzi w taki sposób, aby sąwiadujące krawędzie (mające wspólny wierzchołek) były różnych kolorów. Od razu można zauważyć, że jeśli maksymalny stopień wierzchołka w $G$ to $\Delta$, to $\chi'(G) \geq \Delta$.
+
+\section{Historia}
+
+Jak wiele problemów pokrewnych, kolorowanie krawędzi wywodzi się z problemu kolorowania map, przedstawionego przez Francisa Gutherie'a w 1852. Nawiązując do tego Peter Guthrie Tait pokazał jak 4-kolorowanie mapy daje 3-kolorowanie krawędzi (\textit{Tait coloring})~\cite{tait_1880}. Ponadto, proces jest odwracalny: 3-kolorowanie krawędzi daje 4-kolorowanie mapy. W 1916 roku Dénes König pokazał, że każdy graf dwudzielny o maksymalnym stopniu wierzchołka $\Delta$ może być pokolorowany za pomocą $\Delta$ kolorów~\cite{König1916}. Kolejną pracą w której ukazało się kolorowanie krawędzi napisał Claude Shannon, opisując problem oznaczania kolorami kabli przychodzących do danego punktu w sieci elektrycznej. Dowiódł on, że przewody każdej z sieci mogą być pokolorowane przy użyciu $\lfloor 3m/2 \rfloor$ kolorów, gdzie $m$ to największa liczba przewodów w jednym punkcie~\cite{Shannon1949ATO}. Znacznego zaostrzenia tego ograniczania dokonał Vadim Vizing, który w 1964 roku pokazał, że jeśli największa liczba równoległych krawędzi w multigrafie $G$ o maksymalnym stopniu $\Delta$ to $\mu$, to $\chi'(G) \leq \Delta + \mu$, co dla grafów prostych (z $\mu = 1$) oznacza, że $\chi'(G) = \Delta \lor \chi'(G) = \Delta + 1$~\cite{1571980075458819456}.
+
+Bazując na tych oddryciach, do obliczenie $\chi(G)$ grafu prostego $G$ wytarczy `tylko' rożróżnić, czy graf jest klasy 1 ($\chi(G) = \Delta$) czy klasy 2 ($\chi(G) = \Delta + 1$). NP-kompletność tego problemu pokazał Ian Holyer~\cite{Holyer1981TheNO} w 1981 roku.
+
+\section{Warianty problemu}
+
+\section{Aproksymacje}
+
+Fajna praca~\cite{Nakano1995}
+
+\bibliography{bibliography}
+\bibliographystyle{ieeetr}
+
+\end{document}
