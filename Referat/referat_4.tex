@@ -9,6 +9,8 @@
 \usepackage{enumitem}
 \usepackage{float}
 \usepackage{tikz}
+\newtheorem{lemma}{Lemat}
+\newtheorem{theorem}{Twierdzenie}
 
 \title{Indeks Chromatyczny (kolorowanie krawędzi)}
 \author{Gabriel Budziński\\254609}
@@ -24,7 +26,57 @@ Jeśli $G$ jest grafem, to \textit{indeks chromatyczny} $\chi'(G)$ jest najmniej
 
 Jak wiele problemów pokrewnych, kolorowanie krawędzi wywodzi się z problemu kolorowania map, przedstawionego przez Francisa Gutherie'a w 1852. Nawiązując do tego Peter Guthrie Tait pokazał jak 4-kolorowanie mapy daje 3-kolorowanie krawędzi (\textit{Tait coloring})~\cite{tait_1880}. Ponadto, proces jest odwracalny: 3-kolorowanie krawędzi daje 4-kolorowanie mapy. W 1916 roku Dénes König pokazał, że każdy graf dwudzielny o maksymalnym stopniu wierzchołka $\Delta$ może być pokolorowany za pomocą $\Delta$ kolorów~\cite{König1916}. Kolejną pracą w której ukazało się kolorowanie krawędzi napisał Claude Shannon, opisując problem oznaczania kolorami kabli przychodzących do danego punktu w sieci elektrycznej. Dowiódł on, że przewody każdej z sieci mogą być pokolorowane przy użyciu $\lfloor 3m/2 \rfloor$ kolorów, gdzie $m$ to największa liczba przewodów w jednym punkcie~\cite{Shannon1949ATO}. Znacznego zaostrzenia tego ograniczania dokonał Vadim Vizing, który w 1964 roku pokazał, że jeśli największa liczba równoległych krawędzi w multigrafie $G$ o maksymalnym stopniu $\Delta$ to $\mu$, to $\chi'(G) \leq \Delta + \mu$, co dla grafów prostych (z $\mu = 1$) oznacza, że $\chi'(G) = \Delta \lor \chi'(G) = \Delta + 1$~\cite{1571980075458819456}.
 
-Bazując na tych oddryciach, do obliczenie $\chi(G)$ grafu prostego $G$ wytarczy `tylko' rożróżnić, czy graf jest klasy 1 ($\chi(G) = \Delta$) czy klasy 2 ($\chi(G) = \Delta + 1$). NP-kompletność tego problemu pokazał Ian Holyer~\cite{Holyer1981TheNO} w 1981 roku.
+\section{NP-zupełność}
+
+Bazując na tych oddryciach, do obliczenie $\chi(G)$ grafu prostego $G$ wytarczy `tylko' rożróżnić, czy graf jest klasy 1 ($\chi(G) = \Delta$) czy klasy 2 ($\chi(G) = \Delta + 1$). NP-zupełność tego problemu pokazał Ian Holyer~\cite{Holyer1981TheNO} w 1981 roku.
+
+\subsection{Szkic dowodu}
+
+Aby dowieźć NP-zupełności problemu indeksu chromatycznego, pokażemy mocniejszy wynik {-} problem stwierdzania, czy graf kubiczny (wszystkie wierzchołki o stopniu 3) ma indeks chromatyczny 3 lub 4 poprzez redukcję z 3SAT.
+
+Weźmy zbiór klauzul $C = \{C_1, C_2, \dots, C_r\}$, zmienne $x_1, x_2, \dots, x_s$, każda z klauzul $C_i$ składa się z trzech literałów $l_{i,1},l_{i,2},l_{i,3}$, gdzie $l_{i,j}$ jest zmienną $x_k$ lub jej negacją $\bar{x_k}$.
+
+\begin{lemma}
+    Weźmy $G$ {-} graf kubiczny 3-kolorowalny, $V' \subseteq V(G)$ podzbiór wierzchołków $G$, $E' \subseteq E(G)$ zbiór krawędzi łączących $V'$ z resztą grafu. Wtedy jeśli liczba krawędzi w o kolorze $i$ w $E'$ równa się $k_i$ $(i = 1,2,3,)$, to
+    \[k_1 \equiv k_2 \equiv k_3(\mod2)\] 
+\end{lemma}
+
+Mając instnację $C$ problemu 3SAT pokażemy jak skonstruować graf kubiczny $G$, który jest 3-kolorowalny wtedy i tylko wtedy, gdy $C$ jest spełnialne. Zmienne będą postaci par krawędzi: para o tym samym kolorze to $T$, a o różnym $F$.
+
+Wprowadzimy teraz komponentę inwertującą (Rys.~\ref{fig:inv_component}). Z lematu 1. możemy zobaczyć, że jeśli ta komponenta jest 3-kolorowalna, to jedna z par krawędzi $a,b$ lub $c,d$ musi mieć równe kolory, a pozostałe 3 krawędzie różne. Traktując pary $a,b$ jako wejście i $c,d$ jako wyjście, komponenta potrafi zmieniać reprezentację $T$ na $F$ i vice versa.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{inverting_component.PNG}
+    \caption{Komponenta inwertująca}
+    \label{fig:inv_component}
+\end{figure}
+
+Prawdziwość każdej ze zmiennych $u_i$ będzie reprezentowana przez komponentę wartościującą (Rys.~\ref{fig:var-set_component}). Ta komponenta ma 4 pary krawędzi wyjściowych, choć w ogólności komponenta reprezentująca $u_i$ powinna mieć tyle par wyjściowych ile jest wystąpień $u_i$ i $\bar{u_i}$ w klauzulach $C$. Można pokazać, że w każdym 3-kolorowaniu komponent wartościujących wszystkie pary wyjściowe muszą przyjmować tę samą wartość.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{variable-setting_component.PNG}
+    \caption{Komponenta wartościująca zbudowana z 8 komponent inwertujących mająca 4 wyjścia par krawędzi. W ogólności zbudowana jest z 2n komponent inwertujących oraz ma n par wyjść}
+    \label{fig:var-set_component}
+\end{figure}
+
+Prawdziwość każdej z klauzul $c_j$ będzie sprawdzana przez komponętę testującą (Rys.~\ref{fig:test_component}). Ta komponenta ma 3-kolorowanie wtedy i tylko wtedy gdy nie wszystkie z par wejściowych reprezentują $F$. Pozostałe krawędzie będą omówione później.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{satisfaction-testing_component.PNG}
+    \caption{Komponenta testująca}
+    \label{fig:test_component}
+\end{figure}
+
+Mamy teraz narzędzia do dowodzenia następującego tweirdzenia.
+
+\begin{theorem}
+    Wyznaczenie czy indeks chromatyczny grafu kubicznego to 3 lub 4 jest problemem NP-zupełnym.
+\end{theorem}
+
+
 
 \section{Warianty problemu}
 
